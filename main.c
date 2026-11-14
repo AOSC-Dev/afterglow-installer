@@ -982,8 +982,8 @@ static int setup_timezone(int dirfd, struct InstallConfig *install_config) {
 
 static int setup_fstab(int dirfd, int logfd, const char *target,
                        struct InstallConfig *install_config) {
-  int r = chroot_run(target, "/usr/bin/genfstab",
-                     (const char *const[]){"genfstab", "-pU", "/", NULL}, logfd,
+  int r = chroot_run(target, "/usr/bin/bash",
+                     (const char *const[]){"bash", "-ec", "genfstab -pU / > /etc/fstab", NULL}, logfd,
                      true);
   return r;
 }
