@@ -1126,7 +1126,7 @@ static void draw_fatal_error_page(const char *error_message) {
   const newtComponent errorPage = newtForm(NULL, NULL, 0);
   draw_installing_page_prologue(&exitStruct, errorPage);
   const newtComponent errorLabel =
-      newtLabel(3, 4, "Setup encountered a fatal error and cannot continue.");
+      newtLabel(3, 4, "Setup has encountered a fatal error and cannot continue.");
   const newtComponent errorMessage = newtLabel(3, 6, error_message);
   const newtComponent errorHelp = newtLabel(3, 8, "Press F3 to reboot.");
   newtFormAddComponent(errorPage, errorLabel);
