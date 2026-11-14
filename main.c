@@ -863,21 +863,32 @@ static pid_t setup_ssh_hostkeys(int dirfd, int logfd, const char *target) {
   return pid;
 }
 
-static int format_target_device(char *device) {
+static int format_target_device(int logfd, char *device) {
   pid_t pid = 0;
   int status = 0;
+  int r = 0;
 
-  if (posix_spawnp(&pid, "mkfs.ext4", NULL, NULL,
+  // TODO: redirect to a real log file
+  logfd = open("/dev/null", O_WRONLY);
+  posix_spawn_file_actions_t file_actions;
+  posix_spawn_file_actions_init(&file_actions);
+  posix_spawn_file_actions_adddup2(&file_actions, logfd, STDOUT_FILENO);
+  posix_spawn_file_actions_adddup2(&file_actions, logfd, STDERR_FILENO);
+
+  if (posix_spawnp(&pid, "mkfs.ext4", &file_actions, NULL,
                    (char *const[]){"mkfs.ext4", "-FF", device, NULL},
                    NULL) != 0) {
-    return -1;
+    r = -1;
   }
 
   if (waitpid(pid, &status, 0) == -1) {
-    return -1;
+    r = WEXITSTATUS(status);
   }
 
-  return WEXITSTATUS(status);
+end:
+  close(logfd);
+  posix_spawn_file_actions_destroy(&file_actions);
+  return r;
 }
 
 #if defined(__i386__)
@@ -1172,7 +1183,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   if (activate_target_device(target_path) != 0)
     draw_fatal_error_page("Failed to mark target device as active.");
 #endif
-  if (format_target_device(target_path) != 0)
+  if (format_target_device(-1, target_path) != 0)
     draw_fatal_error_page("Failed to format target device.");
   if (mount_target_device(target_path, MOUNT_POINT) < 0)
     draw_fatal_error_page("Failed to mount target device.");
