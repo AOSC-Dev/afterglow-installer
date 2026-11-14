@@ -1232,6 +1232,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   FD_SET(timer_fd, &fds);
   FD_SET(pid_fd, &fds);
   do {
+    timerfd_settime(timer_fd, 0, &timer, NULL);
     if (select(FD_SETSIZE, &fds, NULL, NULL, NULL) < 0)
       draw_fatal_error_page("select() system call failed.");
     if (FD_ISSET(timer_fd, &fds)) {
@@ -1249,7 +1250,6 @@ static int draw_installing_page(struct InstallConfig *install_config) {
         return -1;
       }
     }
-    timerfd_settime(timer_fd, 0, &timer, NULL);
   } while (1);
 
   newtLabelSetText(s2Status, tic_text);
