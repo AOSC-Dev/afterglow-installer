@@ -679,7 +679,7 @@ static int draw_confirm_page(struct InstallConfig *install_config) {
       "    UNIX username: %s\n"
       "         Hostname: %s\n"
       "         Timezone: %s\n"
-      "           Locale: (%s, in UTF-8)\n\n"
+      "           Locale: %s, in UTF-8\n\n"
       "If all of the information above seem correct, press ENTER to begin "
       "installation. Otherwise, press F3 to restart configuration.\n\n"
       "Please note that Afterglow makes use of compressed RAM block for "
