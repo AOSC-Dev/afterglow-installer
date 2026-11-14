@@ -980,6 +980,14 @@ static int setup_timezone(int dirfd, struct InstallConfig *install_config) {
   return symlinkat(buffer, dirfd, "etc/localtime");
 }
 
+static int setup_fstab(int dirfd, int logfd, const char *target,
+                       struct InstallConfig *install_config) {
+  int r = chroot_run(target, "/usr/bin/genfstab",
+                     (const char *const[]){"genfstab", "-pU", "/", NULL}, logfd,
+                     true);
+  return r;
+}
+
 static int umount_target_system(const char *target) {
   char buffer[4096] = {0};
   const int fd = open("/proc/self/mountinfo", O_RDONLY);
@@ -1257,6 +1265,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   newtRefresh();
 
   setup_user(target_dir_fd, log_fd, MOUNT_POINT, install_config);
+  setup_fstab(target_dir_fd, log_fd, MOUNT_POINT, install_config);
   setup_password(target_dir_fd, install_config);
   setup_hostname(target_dir_fd, install_config);
   setup_timezone(target_dir_fd, install_config);
