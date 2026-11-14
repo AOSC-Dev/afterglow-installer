@@ -857,7 +857,7 @@ static pid_t setup_ssh_hostkeys(int dirfd, int logfd, const char *target) {
   return pid;
 }
 
-static int format_target_device(const char *device) {
+static int format_target_device(char *device) {
   pid_t pid = 0;
   int status = 0;
 
