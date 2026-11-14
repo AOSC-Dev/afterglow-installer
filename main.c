@@ -1310,7 +1310,7 @@ static int draw_success_page(struct InstallConfig *install_config) {
   draw_help_line("  Enter=Reboot  F3=Exit");
   const newtComponent successText = newtTextboxReflowed(
       7, 7,
-      "Afterglow Setup has complete successfully.\n\nRemove any floppy "
+      "Afterglow Setup has completed successfully.\n\nRemove any floppy "
       "disk(s), diskette(s), or optical media (CD/DVD) from the system's "
       "drive(s).\n\nPress ENTER to to restart your system, or F3 to return to "
       "the installation environment for further configuration if needed, "
