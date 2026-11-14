@@ -891,25 +891,6 @@ end:
   return r;
 }
 
-#if defined(__i386__)
-static int activate_target_device(const char *device) {
-  pid_t pid = 0;
-  int status = 0;
-
-  if (posix_spawnp(&pid, "sfdisk", NULL, NULL,
-                   (char *const[]){"sfdisk", "-A", device, NULL},
-                   NULL) != 0) {
-    return -1;
-  }
-
-  if (waitpid(pid, &status, 0) == -1) {
-    return -1;
-  }
-
-  return WEXITSTATUS(status);
-}
-#endif
-
 static int mount_target_device(const char *device, const char *target) {
   return mount(device, target, "ext4", MS_RELATIME | MS_LAZYTIME, NULL);
 }
@@ -1179,10 +1160,6 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   newtRefresh();
   // NOTE: any error inside installing is considered fatal and should trigger
   // the fatal error page.
-#if defined(__i386__)
-  if (activate_target_device(target_path) != 0)
-    draw_fatal_error_page("Failed to mark target device as active.");
-#endif
   if (format_target_device(-1, target_path) != 0)
     draw_fatal_error_page("Failed to format target device.");
   if (mount_target_device(target_path, MOUNT_POINT) < 0)
