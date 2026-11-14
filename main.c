@@ -632,9 +632,9 @@ static int draw_locale_page(struct InstallConfig *install_config) {
 
   const newtComponent localeList = newtListbox(3, 12, 10, 0);
   newtListboxSetWidth(localeList, 70);
-  newtListboxAppendEntry(localeList, " Chinese (Simplified)", "zh_CN");
-  newtListboxAppendEntry(localeList, " Chinese (Traditional)", "zh_TW");
-  newtListboxAppendEntry(localeList, " English (United States)", "en_US");
+  newtListboxAppendEntry(localeList, " Chinese (Simplified)", "zh_CN.UTF-8");
+  newtListboxAppendEntry(localeList, " Chinese (Traditional)", "zh_TW.UTF-8");
+  newtListboxAppendEntry(localeList, " English (United States)", "en_US.UTF-8");
 
   if (install_config->locale) {
     newtListboxSetCurrentByKey(localeList, install_config->locale);
