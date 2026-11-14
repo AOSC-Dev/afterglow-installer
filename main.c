@@ -35,7 +35,7 @@ static_assert(sizeof(off_t) == 8,
               "File offset type must be 64-bit on the platform!");
 
 #define NEWT_COLORSET_BOLD NEWT_COLORSET_CUSTOM(1)
-#define NEWT_COLORSET_GREEN NEWT_COLORSET_CUSTOM(2)
+#define NEWT_COLORSET_CYAN NEWT_COLORSET_CUSTOM(2)
 
 const unsigned int MAX_BODY_TEXT_WIDTH = (80 - 3);
 
@@ -1199,7 +1199,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   if (extract_system_tar_with_progress(TARBALL_PATH, MOUNT_POINT, 8, 8, 60) < 0)
     draw_fatal_error_page("Failed to copy system files.");
   newtLabelSetText(s1Status, tic_text);
-  newtLabelSetColors(s1Status, NEWT_COLORSET_GREEN);
+  newtLabelSetColors(s1Status, NEWT_COLORSET_CYAN);
   SLsmg_fill_region(7, 7, 3, 62, ' ');
   newtRefresh();
 
@@ -1253,7 +1253,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   } while (1);
 
   newtLabelSetText(s2Status, tic_text);
-  newtLabelSetColors(s2Status, NEWT_COLORSET_GREEN);
+  newtLabelSetColors(s2Status, NEWT_COLORSET_CYAN);
   SLsmg_fill_region(8, 7, 3, 62, ' ');
 
   const newtComponent s3Text = newtLabel(7, 8, step3_text);
@@ -1265,7 +1265,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   if (setup_grub_bootloader(target_dir_fd, log_fd, MOUNT_POINT) != 0)
     draw_fatal_error_page("Failed to install GRUB bootloader.");
   newtLabelSetText(s3Status, tic_text);
-  newtLabelSetColors(s3Status, NEWT_COLORSET_GREEN);
+  newtLabelSetColors(s3Status, NEWT_COLORSET_CYAN);
   SLsmg_fill_region(9, 7, 3, 62, ' ');
 
   const newtComponent s4Text = newtLabel(7, 9, step4_text);
@@ -1293,7 +1293,7 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   // instructed to reboot anyways
 
   newtLabelSetText(s4Status, tic_text);
-  newtLabelSetColors(s4Status, NEWT_COLORSET_GREEN);
+  newtLabelSetColors(s4Status, NEWT_COLORSET_CYAN);
   SLsmg_fill_region(10, 7, 3, 62, ' ');
   newtRefresh();
 
@@ -1352,7 +1352,7 @@ int main() {
   newtSetColor(NEWT_COLORSET_LISTBOX, "white", "blue");
   newtSetColor(NEWT_COLORSET_ACTSELLISTBOX, "blue", "lightgray");
   newtSetColor(NEWT_COLORSET_BOLD, "white", "blue");
-  newtSetColor(NEWT_COLORSET_GREEN, "green", "blue");
+  newtSetColor(NEWT_COLORSET_CYAN, "brightcyan", "blue");
   newtSetColor(NEWT_COLORSET_LABEL, "white", "blue");
   newtSetColor(NEWT_COLORSET_FULLSCALE, "yellow", "yellow");
   SLtt_add_color_attribute(NEWT_COLORSET_BOLD, SLTT_BOLD_MASK);
