@@ -753,11 +753,13 @@ static int setup_password(int dirfd, struct InstallConfig *install_config) {
     return -1;
   }
   struct spwd *shadow_entry = NULL;
+  size_t user_entry_start = 0;
   for (shadow_entry = fgetspent(shadow_file); shadow_entry != NULL;
        shadow_entry = fgetspent(shadow_file)) {
     if (strcmp(shadow_entry->sp_namp, install_config->username) == 0) {
       break;
     }
+    user_entry_start = ftell(shadow_file);
   }
   int r = 0;
   if (shadow_entry == NULL) {
@@ -789,6 +791,10 @@ static int setup_password(int dirfd, struct InstallConfig *install_config) {
   }
   // write hashed password to shadow file
   shadow_entry->sp_pwdp = hashed;
+  if (fseek(shadow_file, user_entry_start, SEEK_SET) != 0) {
+    r = -4;
+    goto end;
+  }
   if (putspent(shadow_entry, shadow_file) != 0) {
     r = -4;
     goto end;
