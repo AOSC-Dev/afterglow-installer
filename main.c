@@ -649,6 +649,17 @@ static int draw_locale_page(struct InstallConfig *install_config) {
   return check_page_exit(&exitStruct);
 }
 
+static const char *get_language_name(const char *locale) {
+  if (strncmp(locale, "zh_CN.UTF-8", 11) == 0) {
+    return "Chinese (Simplified)";
+  } else if (strncmp(locale, "zh_TW.UTF-8", 11) == 0) {
+    return "Chinese (Traditional)";
+  } else if (strncmp(locale, "en_US.UTF-8", 11) == 0) {
+    return "English (United States)";
+  }
+  return "Unknown";
+}
+
 static int draw_confirm_page(struct InstallConfig *install_config) {
   char buffer[1024] = {0};
   struct newtExitStruct exitStruct = {};
@@ -678,7 +689,7 @@ static int draw_confirm_page(struct InstallConfig *install_config) {
       "\"System Performance\" chapter in the Afterglow Handbook.",
       get_system_type_string(), install_config->install_target,
       install_config->username, install_config->hostname,
-      install_config->timezone, install_config->locale);
+      install_config->timezone, get_language_name(install_config->locale));
   const newtComponent instText =
       newtTextboxReflowed(3, 4, buffer, MAX_BODY_TEXT_WIDTH, 0, 0, 0);
   newtTextboxSetColors(instText, NEWT_COLORSET_ROOTTEXT,
