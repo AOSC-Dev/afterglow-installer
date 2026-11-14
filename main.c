@@ -118,7 +118,7 @@ static bool can_install_afterglow(void) {
 
 static void draw_title(void) {
   newtDrawRootText(1, 1, "Afterglow Setup");
-  newtDrawRootText(0, 2, "=================");
+  newtDrawRootText(0, 2, "═════════════════");
 }
 
 static void draw_help_line(const char *help_text) {
