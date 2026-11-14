@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 TARGET_POINTER_SIZE = 4
 
 with open("reserved_users.txt") as f:
