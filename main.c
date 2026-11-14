@@ -857,6 +857,23 @@ static pid_t setup_ssh_hostkeys(int dirfd, int logfd, const char *target) {
   return pid;
 }
 
+static int format_target_device(const char *device) {
+  pid_t pid = 0;
+  int status = 0;
+
+  if (posix_spawnp(&pid, "mkfs.ext4", NULL, NULL,
+                   (char *const[]){"mkfs.ext4", "-FF", device, NULL},
+                   NULL) != 0) {
+    return -1;
+  }
+
+  if (waitpid(pid, &status, 0) == -1) {
+    return -1;
+  }
+
+  return WEXITSTATUS(status);
+}
+
 static int mount_target_device(const char *device, const char *target) {
   return mount(device, target, "ext4", MS_RELATIME | MS_LAZYTIME, NULL);
 }
@@ -1126,6 +1143,8 @@ static int draw_installing_page(struct InstallConfig *install_config) {
   newtRefresh();
   // NOTE: any error inside installing is considered fatal and should trigger
   // the fatal error page.
+  if (format_target_device(target_path) != 0)
+    draw_fatal_error_page("Failed to format target device.");
   if (mount_target_device(target_path, MOUNT_POINT) < 0)
     draw_fatal_error_page("Failed to mount target device.");
   const int target_dir_fd = open(MOUNT_POINT, O_DIRECTORY | O_RDONLY);
